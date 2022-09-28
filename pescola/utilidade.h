@@ -1,0 +1,1 @@
+void removerBarraN(char palavra[]);
