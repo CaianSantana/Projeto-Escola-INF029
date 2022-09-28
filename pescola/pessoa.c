@@ -25,23 +25,7 @@ DataNascimento SetDataNascimento(int dia, int mes, int ano) {
   return DN;
 }
 
-void DadosPessoas(Pessoa pessoas[], int TAM) {
-    pessoas[0] = SetPessoa(1, "Johnny", "M", "00000000000",
-                                SetDataNascimento(23, 9, 2002), 1, 0);
-    pessoas[1] = SetPessoa(2, "Maria", "F", "00000000000",
-                                SetDataNascimento(24, 9, 2002), 1, 0);
-    pessoas[2] = SetPessoa(3, "Julia", "F", "00000000000",
-                                SetDataNascimento(25, 9, 2002), 1, 0);
-    pessoas[3] = SetPessoa(4, "Jonas", "M", "00000000000",
-                                SetDataNascimento(22, 9, 2002), 1, 0);
-    pessoas[4] = SetPessoa(6, "James", "M", "00000000000", SetDataNascimento(15, 11, 1967), 0, 6);
-    pessoas[5] = SetPessoa(7, "Mary", "F", "00000000000",
-                       SetDataNascimento(23, 9, 2002), 0, 6);
-    pessoas[6] = SetPessoa(5, "Evelyn", "F", "00000000000",
-                       SetDataNascimento(1, 5, 2002), 0, 6);
-    pessoas[7] = SetPessoa(8, "Justin", "M", "00000000000",
-                       SetDataNascimento(22, 3, 1975), 0, 6);
-}
+
 
 //funções de formatação
 DataNascimento formataData(char data[]) {
@@ -231,10 +215,17 @@ int validaSexo(char sexo[]) {
     return 1;
   }
 }
-int validaCPF(char cpf[]){
+int validaCPF(char cpf[], int TAM, Pessoa p[]){
   int i, j, verificador1, verificador2, resto, calc=0, cpfinteiro[11];
   verificador1 = cpf[9] - 48;
   verificador2 = cpf[10] - 48;
+  for(i=0; i<TAM; i++){
+      if(strcmp(cpf, p[i].CPF)==0){
+          printf("CPF já existe.\n");
+          return 1;
+      }
+        
+  }
   for (i = 0; i < 11; i++)
   {  
     cpfinteiro[i] = cpf[i] - 48; // converte o valor absoluto do char em inteiro//
@@ -347,7 +338,7 @@ int cadastraPessoa(int tipo, int TAM, Pessoa pessoas[]) {
     }
     while(0==0){
         recebeCPF(cpf);
-        if(validaCPF(cpf)==0)
+        if(validaCPF(cpf, TAM, pessoas)==0)
             break;
     }
     while(0==0){
@@ -417,7 +408,7 @@ void alterarCadastro(int alternativa, int tipo, Pessoa pessoas[], int TAM){
         case 2:
             while(0==0){
                 recebeCPF(cpf);
-                if(validaCPF(cpf)==0){
+                if(validaCPF(cpf, TAM, pessoas)==0){
                     pessoas[posicao] = SetPessoa(pessoas[posicao].Matricula, pessoas[posicao].Nome, pessoas[posicao].Sexo, cpf,
                                                 pessoas[posicao].datanascimento, pessoas[posicao].Tipo, pessoas[posicao].NumMat);
                     break;
@@ -457,7 +448,7 @@ void alterarCadastro(int alternativa, int tipo, Pessoa pessoas[], int TAM){
             }
             while(0==0){
                 recebeCPF(cpf);
-                if(validaCPF(cpf)==0){
+                if(validaCPF(cpf, TAM, pessoas)==0){
                     strcpy(pessoas[posicao].CPF, cpf);
                     break;
                 }
